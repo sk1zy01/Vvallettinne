@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Request</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-top: 50px;
+        }
+        h1 {
+            font-size: 28px;
+            transition: all 0.5s ease;
+        }
+        .btn-container {
+            margin-top: 20px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Расстояние между кнопками */
+        }
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .yes-btn {
+            background-color: green;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        .no-btn {
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s ease, left 0.3s ease, top 0.3s ease, opacity 0.5s ease;
+        }
+        .gif-container {
+            margin-bottom: 30px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        #secondGif {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="gif-container" id="firstGif">
+        <img src="https://i.ibb.co/22b03Hy/cd842cb90c517ef157901864eb2cb07b-1.gif" alt="Valentine's GIF">
+    </div>
+
+    <h1 id="mainText">Will you be my Valentine?</h1>
+
+    <div class="gif-container" id="secondGif">
+        <img src="https://i.ibb.co/SDcpGZvf/cat-hug-50-warm-cats-in-blanket.gif" alt="A cute cat hugging a blanket">
+    </div>
+
+    <div class="btn-container" id="btnContainer">
+        <button class="yes-btn" id="yesButton">Yes</button>
+        <button class="no-btn" id="noButton">No</button>
+    </div>
+
+    <script>
+        let noClickCount = 0;
+        let yesButton = document.getElementById("yesButton");
+        let noButton = document.getElementById("noButton");
+        let mainText = document.getElementById("mainText");
+        let firstGif = document.getElementById("firstGif");
+        let secondGif = document.getElementById("secondGif");
+        let btnContainer = document.getElementById("btnContainer");
+
+        let noTexts = ["Are you sure??:(", "Really?????('°~°)", "Think again!!!!(T_T)", "I'll buy you a chocolate!!", ";)"];
+
+        noButton.addEventListener("click", function() {
+            if (noClickCount < noTexts.length) {
+                noButton.textContent = noTexts[noClickCount];
+                noClickCount++;
+
+                // Увеличиваем "Yes"
+                yesButton.style.transform = `scale(${1 + noClickCount * 0.3})`;
+
+                // Уменьшаем "No"
+                let newScale = 1 - noClickCount * 0.15;
+                noButton.style.transform = `scale(${newScale < 0.4 ? 0.4 : newScale})`;
+
+                if (noClickCount === 2) { 
+                    yesButton.textContent = "yessss!!"; 
+                }
+
+                // После нескольких нажатий кнопка "No" начинает убегать
+                if (noClickCount >= 3) {
+                    let randomX = Math.random() * 300 - 150;
+                    let randomY = Math.random() * 150 - 75;
+                    noButton.style.position = "absolute";
+                    noButton.style.left = `${randomX}px`;
+                    noButton.style.top = `${randomY}px`;
+                }
+            }
+
+            // После 5 кликов "No" исчезает
+            if (noClickCount === 5) {
+                setTimeout(() => { 
+                    noButton.style.opacity = "0";
+                    setTimeout(() => { noButton.style.display = "none"; }, 500);
+                    yesButton.style.transform = "scale(2.5)";
+                }, 1000);
+            }
+        });
+
+        yesButton.addEventListener("click", function() {
+            mainText.textContent = "YUPPP!!!!! I LOVE YOU HONEY!!!;))";
+            secondGif.style.display = "block";
+            btnContainer.style.display = "none";
+            firstGif.style.display = "none";
+        });
+    </script>
+</body>
+</html>
